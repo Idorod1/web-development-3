@@ -6,10 +6,20 @@
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
     </div>
-    <p class="progress-label">
-      Stage <span id="stage-counter"><%= stage.order %></span>
-      of <span id="stage-total"><%= stage.total %></span>
-    </p>
+    <div class="progress-meta">
+      <p class="progress-label">
+        Stage <span id="stage-counter"><%= stage.order %></span>
+        of <span id="stage-total"><%= stage.total %></span>
+      </p>
+      <p class="score-label">
+        <span class="score-value" id="score"><%= progress.score %></span>
+        <span class="score-max">/ <%= progress.maxScore %> pts</span>
+        <span class="score-sep">&middot;</span>
+        <span id="solved-count"><%= progress.solvedCount %></span> solved
+        <span class="score-sep">&middot;</span>
+        <span id="total-attempts"><%= progress.totalAttempts %></span> attempts
+      </p>
+    </div>
   </section>
 
   <section
@@ -21,6 +31,7 @@
   >
     <div class="stage-heading">
       <span class="stage-number">Stage <span id="stage-order"><%= stage.order %></span></span>
+      <span class="stage-badge" id="stage-badge" hidden></span>
       <h1 id="stage-title"><%= stage.title %></h1>
     </div>
 
@@ -105,7 +116,12 @@
 
   <section class="completed" id="completed" hidden>
     <h2>All stages complete</h2>
+    <p class="final-score">
+      <span id="final-score">0</span> / <span id="final-max">0</span> points
+      in <span id="final-attempts">0</span> attempts
+    </p>
     <p>You have built every request in the game. Use Previous to revisit any stage.</p>
+    <button type="button" class="btn btn-ghost" id="play-again">Play again</button>
   </section>
 
 </main>

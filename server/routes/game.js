@@ -8,8 +8,19 @@
 const express = require('express');
 const { getStage, publicStage, publicStages, TOTAL_STAGES } = require('../game/stages');
 const { check } = require('../game/validator');
+const progress = require('../game/progress');
 
 const router = express.Router();
+
+// GET /api/game/progress — score, attempts and solved stages
+router.get('/progress', (req, res) => {
+  res.status(200).json(progress.summary());
+});
+
+// POST /api/game/progress/reset — start over
+router.post('/progress/reset', (req, res) => {
+  res.status(200).json(progress.reset());
+});
 
 // GET /api/game/stages — all stages, answers removed
 router.get('/stages', (req, res) => {
@@ -45,6 +56,7 @@ router.post('/attempts', async (req, res, next) => {
     }
 
     const verdict = check(stage, { method, path, query, body });
+    const scoring = progress.record(stage.id, verdict.correct);
 
     const search = new URLSearchParams(
       Object.entries(query || {}).filter(([, value]) => value !== '')
@@ -79,7 +91,8 @@ router.post('/attempts', async (req, res, next) => {
       stageId: stage.id,
       correct: verdict.correct,
       message: verdict.message,
-      response
+      response,
+      progress: scoring
     });
   } catch (err) {
     next(err);

@@ -3,6 +3,7 @@ const express = require('express');
 
 const apiRouter = require('./server/routes');
 const { publicStage, getStage } = require('./server/game/stages');
+const progress = require('./server/game/progress');
 const { schemas, relationship, statusCodes } = require('./server/data/schemas');
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.get('/', (req, res) => {
-  res.render('index', { stage: publicStage(getStage(1)) });
+  res.render('index', { stage: publicStage(getStage(1)), progress: progress.summary() });
 });
 
 app.get('/schemas', (req, res) => {

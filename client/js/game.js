@@ -26,11 +26,20 @@
   const totalEl = document.getElementById('stage-total');
   const progressFill = document.getElementById('progress-fill');
 
+  const scoreEl = document.getElementById('score');
+  const solvedCountEl = document.getElementById('solved-count');
+  const totalAttemptsEl = document.getElementById('total-attempts');
+  const stageBadge = document.getElementById('stage-badge');
+  const finalScoreEl = document.getElementById('final-score');
+  const finalMaxEl = document.getElementById('final-max');
+  const finalAttemptsEl = document.getElementById('final-attempts');
+  const playAgainBtn = document.getElementById('play-again');
+
   const state = {
     stageId: Number(stageCard.dataset.stageId),
     order: Number(orderEl.textContent),
     total: Number(totalEl.textContent),
-    solved: []
+    progress: null
   };
 
   function renderStage(stage) {
@@ -63,17 +72,48 @@
     updateNav();
   }
 
-  function updateProgress() {
-    const done = state.solved.length;
-    progressFill.style.width = (done / state.total) * 100 + '%';
+  function isSolved(stageId) {
+    return Boolean(state.progress && state.progress.perStage[stageId]);
+  }
+
+  /** Render the score panel and the current stage's badge from server progress. */
+  function renderProgress() {
+    const p = state.progress;
+    if (!p) return;
+
+    scoreEl.textContent = p.score;
+    solvedCountEl.textContent = p.solvedCount;
+    totalAttemptsEl.textContent = p.totalAttempts;
+    progressFill.style.width = (p.solvedCount / p.totalStages) * 100 + '%';
+
+    const solved = p.perStage[state.stageId];
+    const tries = p.attemptsPerStage[state.stageId];
+    if (solved) {
+      stageBadge.hidden = false;
+      stageBadge.className = 'stage-badge is-solved';
+      stageBadge.textContent =
+        'Solved · ' + solved.points + ' pts in ' + solved.attempts +
+        (solved.attempts === 1 ? ' attempt' : ' attempts');
+    } else if (tries) {
+      stageBadge.hidden = false;
+      stageBadge.className = 'stage-badge is-trying';
+      stageBadge.textContent = tries + (tries === 1 ? ' attempt' : ' attempts');
+    } else {
+      stageBadge.hidden = true;
+    }
+
+    completedEl.hidden = !p.complete;
+    if (p.complete) {
+      finalScoreEl.textContent = p.score;
+      finalMaxEl.textContent = p.maxScore;
+      finalAttemptsEl.textContent = p.totalAttempts;
+    }
   }
 
   function updateNav() {
     prevBtn.disabled = state.order <= 1;
-    const isSolved = state.solved.indexOf(state.stageId) !== -1;
-    nextBtn.hidden = !isSolved || state.order >= state.total;
-    completedEl.hidden = !(state.solved.length === state.total);
-    updateProgress();
+    nextBtn.hidden = !isSolved(state.stageId) || state.order >= state.total;
+    renderProgress();
   }
 
   async function loadStage(order) {
@@ -125,8 +165,11 @@
       }
       ResponseView.showVerdict(result.correct, result.message);
 
-      if (result.correct && state.solved.indexOf(state.stageId) === -1) {
-        state.solved.push(state.stageId);
+      if (result.progress) {
+        state.progress = result.progress;
+        if (result.correct && result.progress.awarded) {
+          ResponseView.showVerdict(true, result.message + ' +' + result.progress.awarded + ' points.');
+        }
       }
       updateNav();
     } catch (err) {
@@ -154,10 +197,26 @@
     loadStage(state.order - 1);
   });
 
+  playAgainBtn.addEventListener('click', async function () {
+    const res = await fetch('/api/game/progress/reset', { method: 'POST' });
+    state.progress = await res.json();
+    loadStage(1);
+  });
+
+  async function loadProgress() {
+    try {
+      const res = await fetch('/api/game/progress');
+      state.progress = await res.json();
+      updateNav();
+    } catch (err) {
+      /* the score panel keeps its server-rendered values */
+    }
+  }
+
   // The first stage is rendered by EJS, so its inputs come from the markup.
   RequestBuilder.configure({
     query: stageCard.dataset.needsQuery === 'true',
     body: stageCard.dataset.needsBody === 'true'
   });
-  updateNav();
+  loadProgress();
 })();
