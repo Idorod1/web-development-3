@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: 'HTTP Cookbook — ' + status, active: '' }) %>
+
+<main class="error-page">
+  <p class="error-status"><%= status %></p>
+  <h1><%= message %></h1>
+  <p class="error-actions">
+    <a class="btn btn-primary" href="/">Back to the game</a>
+    <a class="btn btn-ghost" href="/schemas">API reference</a>
+  </p>
+</main>
+
+<%- include('partials/foot') %>

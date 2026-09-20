@@ -1,0 +1,117 @@
+<%- include('partials/head', { title: 'HTTP Cookbook — Game', active: 'game' }) %>
+
+<main class="game">
+
+  <section class="progress-bar" aria-label="Progress">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <p class="progress-label">
+      Stage <span id="stage-counter"><%= stage.order %></span>
+      of <span id="stage-total"><%= stage.total %></span>
+    </p>
+  </section>
+
+  <section
+    class="stage-card"
+    id="stage-card"
+    data-stage-id="<%= stage.id %>"
+    data-needs-query="<%= stage.inputs.query %>"
+    data-needs-body="<%= stage.inputs.body %>"
+  >
+    <div class="stage-heading">
+      <span class="stage-number">Stage <span id="stage-order"><%= stage.order %></span></span>
+      <h1 id="stage-title"><%= stage.title %></h1>
+    </div>
+
+    <p class="scenario" id="stage-scenario"><%= stage.scenario %></p>
+
+    <ul class="concepts" id="stage-concepts">
+      <% stage.concepts.forEach(function (concept) { %>
+        <li class="concept"><%= concept %></li>
+      <% }) %>
+    </ul>
+
+    <details class="hint">
+      <summary>Need a hint?</summary>
+      <p id="stage-hint"><%= stage.hint %></p>
+    </details>
+  </section>
+
+  <section class="builder" aria-labelledby="builder-title">
+    <h2 id="builder-title">Build your request</h2>
+
+    <form id="request-form" novalidate>
+
+      <div class="request-line">
+        <label class="field method-field">
+          <span class="field-label">Method</span>
+          <select id="method" name="method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+            <option>PATCH</option>
+            <option>DELETE</option>
+          </select>
+        </label>
+
+        <label class="field path-field">
+          <span class="field-label">Path</span>
+          <input type="text" id="path" name="path" placeholder="/api/..." autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+
+      <fieldset class="params" id="query-section">
+        <legend>Query parameters</legend>
+        <div id="query-rows"></div>
+        <button type="button" class="btn btn-ghost" id="add-param">+ Add parameter</button>
+      </fieldset>
+
+      <fieldset class="body-section" id="body-section">
+        <legend>Request body (JSON)</legend>
+        <textarea id="body" name="body" rows="7" spellcheck="false" placeholder='{ "key": "value" }'></textarea>
+        <p class="body-error" id="body-error" hidden></p>
+      </fieldset>
+
+      <div class="preview">
+        <span class="preview-label">Request</span>
+        <code id="request-preview">GET /api/</code>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" id="send">Send request</button>
+        <button type="button" class="btn btn-ghost" id="reset">Reset</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="feedback" id="feedback" hidden aria-live="polite">
+    <div class="verdict" id="verdict"></div>
+    <p class="verdict-message" id="verdict-message"></p>
+  </section>
+
+  <section class="response" id="response-panel" hidden>
+    <div class="response-head">
+      <h2>Server response</h2>
+      <span class="status-code" id="status-code"></span>
+    </div>
+    <pre class="response-body"><code id="response-body"></code></pre>
+  </section>
+
+  <nav class="stage-nav">
+    <button type="button" class="btn btn-ghost" id="prev-stage" disabled>&larr; Previous</button>
+    <button type="button" class="btn btn-primary" id="next-stage" hidden>Next stage &rarr;</button>
+  </nav>
+
+  <section class="completed" id="completed" hidden>
+    <h2>All stages complete</h2>
+    <p>You have built every request in the game. Use Previous to revisit any stage.</p>
+  </section>
+
+</main>
+
+<script src="/js/request-builder.js"></script>
+<script src="/js/response-view.js"></script>
+<script src="/js/game.js"></script>
+
+<%- include('partials/foot') %>

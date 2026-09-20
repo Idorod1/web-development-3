@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "title": "Margherita Pizza",
+    "cuisine": "italian",
+    "prepTime": 30,
+    "servings": 2,
+    "difficulty": "medium",
+    "rating": 4.7,
+    "vegetarian": true,
+    "ingredientIds": [1, 2, 3, 4, 5]
+  },
+  {
+    "id": 2,
+    "title": "Spaghetti Carbonara",
+    "cuisine": "italian",
+    "prepTime": 25,
+    "servings": 4,
+    "difficulty": "medium",
+    "rating": 4.8,
+    "vegetarian": false,
+    "ingredientIds": [20, 21, 6, 19, 22]
+  },
+  {
+    "id": 3,
+    "title": "Chocolate Brownies",
+    "cuisine": "american",
+    "prepTime": 45,
+    "servings": 8,
+    "difficulty": "easy",
+    "rating": 4.9,
+    "vegetarian": true,
+    "ingredientIds": [1, 7, 8, 9, 6, 24]
+  },
+  {
+    "id": 4,
+    "title": "Chicken Teriyaki",
+    "cuisine": "japanese",
+    "prepTime": 35,
+    "servings": 3,
+    "difficulty": "medium",
+    "rating": 4.5,
+    "vegetarian": false,
+    "ingredientIds": [10, 11, 7, 13, 12]
+  },
+  {
+    "id": 5,
+    "title": "Classic Hummus",
+    "cuisine": "middle-eastern",
+    "prepTime": 15,
+    "servings": 6,
+    "difficulty": "easy",
+    "rating": 4.6,
+    "vegetarian": true,
+    "ingredientIds": [15, 16, 17, 13, 18, 4]
+  },
+  {
+    "id": 6,
+    "title": "Garlic Fried Rice",
+    "cuisine": "japanese",
+    "prepTime": 20,
+    "servings": 2,
+    "difficulty": "easy",
+    "rating": 4.2,
+    "vegetarian": true,
+    "ingredientIds": [12, 13, 14, 6, 11]
+  },
+  {
+    "id": 7,
+    "title": "Avocado Toast",
+    "cuisine": "american",
+    "prepTime": 10,
+    "servings": 1,
+    "difficulty": "easy",
+    "rating": 4.1,
+    "vegetarian": true,
+    "ingredientIds": [25, 17, 22, 4]
+  },
+  {
+    "id": 8,
+    "title": "Pasta Aglio e Olio",
+    "cuisine": "italian",
+    "prepTime": 20,
+    "servings": 2,
+    "difficulty": "easy",
+    "rating": 4.4,
+    "vegetarian": true,
+    "ingredientIds": [20, 13, 4, 22, 5]
+  },
+  {
+    "id": 9,
+    "title": "Vanilla Pancakes",
+    "cuisine": "american",
+    "prepTime": 25,
+    "servings": 4,
+    "difficulty": "easy",
+    "rating": 4.3,
+    "vegetarian": true,
+    "ingredientIds": [1, 23, 6, 7, 24, 8]
+  },
+  {
+    "id": 10,
+    "title": "Roasted Chicken with Lemon",
+    "cuisine": "middle-eastern",
+    "prepTime": 90,
+    "servings": 5,
+    "difficulty": "hard",
+    "rating": 4.8,
+    "vegetarian": false,
+    "ingredientIds": [10, 17, 13, 14, 18, 4, 22]
+  }
+]

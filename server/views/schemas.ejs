@@ -1,0 +1,148 @@
+<%- include('partials/head', { title: 'HTTP Cookbook — Schemas', active: 'schemas' }) %>
+
+<main class="schemas">
+
+  <section class="page-intro">
+    <h1>API reference</h1>
+    <p>
+      Every resource in the system, its fields and their data types — plus the query
+      parameters and endpoints you need to build requests in the game.
+    </p>
+  </section>
+
+  <% schemas.forEach(function (resource) { %>
+    <section class="resource" id="<%= resource.key %>">
+
+      <div class="resource-head">
+        <h2><%= resource.name %></h2>
+        <code class="base-path"><%= resource.basePath %></code>
+      </div>
+      <p class="resource-description"><%= resource.description %></p>
+
+      <h3>Fields</h3>
+      <div class="table-scroll">
+        <table class="schema-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Example</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% resource.fields.forEach(function (field) { %>
+              <tr>
+                <td><code class="field-name"><%= field.name %></code></td>
+                <td><span class="type type-<%= field.type.replace('[]', '-array') %>"><%= field.type %></span></td>
+                <td><code class="example"><%= JSON.stringify(field.example) %></code></td>
+                <td>
+                  <% if (field.notes) { %>
+                    <%= field.notes %>
+                  <% } %>
+                  <% if (field.allowed) { %>
+                    <span class="allowed">
+                      <% field.allowed.forEach(function (value) { %><code><%= value %></code><% }) %>
+                    </span>
+                  <% } %>
+                  <% if (field.references) { %>
+                    <span class="references">&rarr; <%= field.references %></span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Query parameters</h3>
+      <div class="table-scroll">
+        <table class="schema-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>What it does</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% resource.queryParams.forEach(function (param) { %>
+              <tr>
+                <td><code class="field-name"><%= param.name %></code></td>
+                <td><span class="type type-<%= param.type %>"><%= param.type %></span></td>
+                <td><%= param.description %></td>
+                <td><code class="example"><%= param.example %></code></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Endpoints</h3>
+      <ul class="endpoint-list">
+        <% resource.endpoints.forEach(function (endpoint) { %>
+          <li class="endpoint">
+            <span class="method method-<%= endpoint.method.toLowerCase() %>"><%= endpoint.method %></span>
+            <code class="endpoint-path"><%= endpoint.path %></code>
+            <span class="endpoint-description"><%= endpoint.description %></span>
+          </li>
+        <% }) %>
+      </ul>
+
+    </section>
+  <% }) %>
+
+  <section class="resource relationship">
+    <div class="resource-head">
+      <h2>Relationship</h2>
+      <code class="base-path"><%= relationship.kind %></code>
+    </div>
+    <p class="resource-description"><%= relationship.summary %></p>
+
+    <p class="relationship-link">
+      <code><%= relationship.from %></code>
+      <span class="arrow">&rarr;</span>
+      <code><%= relationship.to %></code>
+    </p>
+
+    <ul class="endpoint-list">
+      <% relationship.navigate.forEach(function (route) { %>
+        <li class="endpoint">
+          <span class="direction"><%= route.direction %></span>
+          <code class="endpoint-path"><%= route.path %></code>
+          <span class="endpoint-description">e.g. <code><%= route.example %></code></span>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+
+  <section class="resource">
+    <div class="resource-head">
+      <h2>Status codes</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="schema-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Meaning</th>
+            <th>When the API returns it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% statusCodes.forEach(function (status) { %>
+            <tr>
+              <td><span class="status status-<%= String(status.code).charAt(0) %>xx"><%= status.code %></span></td>
+              <td><%= status.name %></td>
+              <td><%= status.when %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/foot') %>
