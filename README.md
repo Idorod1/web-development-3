@@ -30,8 +30,6 @@ npm start
 
 Then open **http://localhost:3000**
 
-Stop the server with `Ctrl + C`. To use another port: `PORT=4000 npm start`
-
 ---
 
 ## Pages
@@ -40,10 +38,6 @@ Stop the server with `Ctrl + C`. To use another port: `PORT=4000 npm start`
 |------|---------|
 | Game | `http://localhost:3000/` |
 | Schemas / API reference | `http://localhost:3000/schemas` |
-
-The schemas page documents both resources — fields, data types, query parameters
-and endpoints. Players need it to build the requests, so it is worth keeping open
-in a second tab.
 
 ---
 
@@ -77,6 +71,3 @@ A perfect run is 100 points across the 10 stages.
 | 8 | Replace a recipe | `PUT`, route parameter, request body |
 | 9 | Add an ingredient to a recipe | `POST`, route parameter, request body, relationship |
 | 10 | Remove a recipe | `DELETE`, route parameter |
-
-The correct answers are defined on the server only and are never sent to the
-browser.
