@@ -9,6 +9,7 @@ const express = require('express');
 const { getStage, publicStage, publicStages, TOTAL_STAGES } = require('../game/stages');
 const { check } = require('../game/validator');
 const progress = require('../game/progress');
+const store = require('../data/store');
 
 const router = express.Router();
 
@@ -18,7 +19,10 @@ router.get('/progress', (req, res) => {
 });
 
 // POST /api/game/progress/reset — start over
+// Also restores the recipe/ingredient data to its seed state, so replaying
+// mutating stages (add/attach/delete) behaves the same way every time.
 router.post('/progress/reset', (req, res) => {
+  store.reset();
   res.status(200).json(progress.reset());
 });
 
